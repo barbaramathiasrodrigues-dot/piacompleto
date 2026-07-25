@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚡ Pia OS — Ciclo Completo de Infraestrutura</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f8fafc;
+      min-height: 100vh;
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="p-4 md:p-8 font-sans">
+
+  <div x-data="cicloPiaApp()" x-init="initFirebase()" class="max-w-md mx-auto space-y-6">
+
+    <!-- HEADER DE INFRAESTRUTURA DA CASA REGULADORA -->
+    <header class="glass-card rounded-3xl p-6 shadow-xl border border-slate-700/50 text-center">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-xs font-bold uppercase tracking-widest text-teal-400">Casa Reguladora</span>
+        <span x-show="loading" class="text-xs text-amber-400 bg-amber-950/60 px-2.5 py-1 rounded-full animate-pulse border border-amber-800">Sync...</span>
+      </div>
+      <h1 class="text-2xl font-black text-white">🍽️ Pia OS: Ciclo Completo</h1>
+      
+      <!-- BARRA DE CAPACIDADE DA INFRAESTRUTURA -->
+      <div class="mt-4 bg-slate-900/80 p-3.5 rounded-2xl border border-slate-700/60">
+        <div class="flex justify-between text-xs font-bold mb-1.5">
+          <span class="text-slate-400">Recuperação de Infraestrutura</span>
+          <span class="text-teal-400 font-extrabold" x-text="percent + '%'"></span>
+        </div>
+        <div class="w-full bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5">
+          <div class="bg-gradient-to-r from-teal-500 via-emerald-400 to-green-300 h-full rounded-full transition-all duration-500 shadow-sm" :style="'width: ' + percent + '%'"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- RODA DO CICLO: GRADE INTERATIVA QUE VAI SENDO PINTADA -->
+    <div class="glass-card rounded-3xl p-5 shadow-xl space-y-3">
+      <div class="flex justify-between items-center">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Mapa do Ciclo de Tarefas</h2>
+        <span class="text-[10px] text-slate-500">Toque em qualquer card para focar</span>
+      </div>
+      
+      <div class="grid grid-cols-3 gap-2 text-xs">
+        <template x-for="(step, index) in steps" :key="index">
+          <div 
+            @click="setStep(index)"
+            :class="[
+              step.done ? 'bg-emerald-500/25 border-emerald-500/60 text-emerald-300 shadow-sm' : 'bg-slate-800/60 border-slate-700/50 text-slate-400',
+              currentStep === index && percent < 100 ? 'ring-2 ring-teal-400 font-bold scale-105' : ''
+            ]"
+            class="p-2.5 rounded-2xl border transition-all cursor-pointer flex flex-col items-center justify-center gap-1 min-h-[68px] text-center">
+            <span class="text-lg" x-text="step.done ? '✅' : step.icon"></span>
+            <span class="text-[10px] leading-tight font-medium" x-text="step.title"></span>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- MODO GPS: FOCO TOTAL NA TAREFA DO MOMENTO -->
+    <template x-if="percent < 100">
+      <div class="glass-card rounded-3xl p-6 shadow-xl border border-teal-500/40 space-y-4">
+        <div class="flex justify-between items-center text-xs font-bold text-teal-400 uppercase tracking-wider">
+          <span>🎯 Próximo Gargalo Operacional</span>
+          <span x-text="(currentStep + 1) + ' / ' + steps.length"></span>
+        </div>
+
+        <div class="space-y-2 bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
+          <div class="flex items-center gap-3">
+            <span class="text-3xl" x-text="steps[currentStep].icon"></span>
+            <div>
+              <h3 class="text-base font-bold text-white" x-text="steps[currentStep].title"></h3>
+              <p class="text-xs text-slate-400 mt-0.5" x-text="steps[currentStep].desc"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTÃO GIGANTE DE AVANÇO -->
+        <button @click="completeCurrent()" class="w-full py-5 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-slate-950 font-black text-lg rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+          ✔ CONCLUIR E PINTAR ESTADO
+        </button>
+      </div>
+    </template>
+
+    <!-- ESTADO 100%: INFRAESTRUTURA LIBERADA -->
+    <template x-if="percent === 100">
+      <div class="glass-card rounded-3xl p-6 shadow-xl border border-emerald-500/50 text-center space-y-4 bg-emerald-950/20">
+        <span class="text-5xl block">✨</span>
+        <h2 class="text-xl font-black text-white">Infraestrutura 100% Operacional!</h2>
+        <p class="text-xs text-slate-300">A pia foi completamente recuperada e o ciclo foi concluído sem esforço residual.</p>
+        
+        <button @click="resetCiclo()" class="w-full py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition border border-slate-700">
+          🔄 Reiniciar Ciclo para Nova Utilização
+        </button>
+      </div>
+    </template>
+
+  </div>
+
+  <!-- FIREBASE INTERFACE MODULE (PROJETO PIA-COMPLETA) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyADaw2Lx7y28FEJIGbPd2zs4cnrCPiNkOc",
+      authDomain: "pia-completa.firebaseapp.com",
+      projectId: "pia-completa",
+      storageBucket: "pia-completa.firebasestorage.app",
+      messagingSenderId: "84789508555",
+      appId: "1:84789508555:web:4bccf6f34024a29eb3de4e",
+      measurementId: "G-LBQGK58Z4K"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
+    window.doc = doc;
+    window.setDoc = setDoc;
+    window.onSnapshot = onSnapshot;
+  </script>
+
+  <!-- LÓGICA DO APP (AlpineJS) -->
+  <script>
+    function cicloPiaApp() {
+      return {
+        loading: true,
+        currentStep: 0,
+        steps: [
+          { id: 's1', title: 'Pegar Louça Quarto/Sala', icon: '☕', desc: 'Resgatar copos e pratos perdidos pela casa.', done: false },
+          { id: 's2', title: 'Ferver Água', icon: '🫖', desc: 'Ferver água se precisar desengordurar.', done: false },
+          { id: 's3', title: 'Tirar Lixos da Pia', icon: '🗑️', desc: 'Descartar restos e embalagens vazias.', done: false },
+          { id: 's4', title: 'Tirar Garrafas Vazias', icon: '🍾', desc: 'Retirar garrafas da área de trabalho.', done: false },
+          { id: 's5', title: 'Guardar Coisas de Fora', icon: '📦', desc: 'Devolver objetos que não são da pia.', done: false },
+          { id: 's6', title: 'Empilhar Semelhantes', icon: '🍽️', desc: 'Agrupar pratos com pratos e copos com copos.', done: false },
+          { id: 's7', title: 'Limpar a Pia', icon: '🧽', desc: 'Liberar a cuba para a água fluir.', done: false },
+          { id: 's8', title: 'Pratos', icon: '🍽️', desc: 'Lavar o lote de pratos.', done: false },
+          { id: 's9', title: 'Copos', icon: '🥛', desc: 'Lavar copos e xícaras.', done: false },
+          { id: 's10', title: 'Talheres', icon: '🍴', desc: 'Lavar os talheres.', done: false },
+          { id: 's11', title: 'Outras Louças', icon: '🥣', desc: 'Lavar potes e recipientes.', done: false },
+          { id: 's12', title: 'Panelas', icon: '🍳', desc: 'Lavar as panelas e finalizar.', done: false }
+        ],
+
+        get percent() {
+          let doneCount = this.steps.filter(s => s.done).length;
+          return Math.round((doneCount / this.steps.length) * 100);
+        },
+
+        async initFirebase() {
+          const checkDb = setInterval(() => {
+            if (window.db) {
+              clearInterval(checkDb);
+              const docRef = window.doc(window.db, "modo_casa", "ciclo_pia");
+              window.onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                  const data = docSnap.data();
+                  this.steps.forEach(s => {
+                    if (data[s.id] !== undefined) {
+                      s.done = data[s.id];
+                    }
+                  });
+                  if (data.currentStep !== undefined) {
+                    this.currentStep = data.currentStep;
+                  }
+                }
+                this.loading = false;
+              });
+            }
+          }, 100);
+        },
+
+        async saveState() {
+          if (!window.db) return;
+          const payload = { currentStep: this.currentStep };
+          this.steps.forEach(s => { payload[s.id] = s.done; });
+          const docRef = window.doc(window.db, "modo_casa", "ciclo_pia");
+          await window.setDoc(docRef, payload, { merge: true });
+        },
+
+        completeCurrent() {
+          this.steps[this.currentStep].done = true;
+          // Procura o próximo passo não concluído
+          let next = this.steps.findIndex((s, idx) => idx > this.currentStep && !s.done);
+          if (next !== -1) {
+            this.currentStep = next;
+          } else {
+            let firstUndone = this.steps.findIndex(s => !s.done);
+            if (firstUndone !== -1) this.currentStep = firstUndone;
+          }
+          this.saveState();
+        },
+
+        setStep(index) {
+          this.currentStep = index;
+          this.saveState();
+        },
+
+        resetCiclo() {
+          this.steps.forEach(s => s.done = false);
+          this.currentStep = 0;
+          this.saveState();
+        }
+      }
+    }
+  </script>
+</body>
+</html>
