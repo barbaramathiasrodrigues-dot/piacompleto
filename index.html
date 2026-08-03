@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🐉 Estalagem do Dragão Verde — Casa Reguladora</title>
+  <title>🍺 Estalagem da Pia — Casa Reguladora</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <!-- Fonte no estilo fantasia medieval -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=MedievalSharp&display=swap" rel="stylesheet">
@@ -43,43 +42,43 @@
     <header class="tavern-card rounded-3xl p-6 text-center relative overflow-hidden gold-border glow-gold">
       <div class="flex justify-between items-center mb-2">
         <span class="text-[10px] font-cinzel font-bold uppercase tracking-widest text-amber-500">Casa Reguladora</span>
-        <span x-show="loading" class="text-[10px] text-amber-400 bg-amber-950/80 px-2.5 py-1 rounded-full animate-pulse border border-amber-700">Conectando à Taverna...</span>
+        <span x-show="loading" class="text-[10px] text-amber-400 bg-amber-950/80 px-2.5 py-1 rounded-full animate-pulse border border-amber-700">Conectando...</span>
       </div>
       <h1 class="text-2xl font-black text-amber-100 flex items-center justify-center gap-2">
         🍺 Estalagem da Pia
       </h1>
-      <p class="text-xs text-amber-200/70 mt-1 italic">"Mesmo a menor das ações pode mudar o rumo do seu dia."</p>
+      <p class="text-xs text-amber-200/70 mt-1 italic">"Não é sobre zerar a pia. É sobre acolher a próxima refeição."</p>
     </header>
 
-    <!-- TELA 1: ESCOLHA DA JORNADA / NÍVEL DE ENERGIA -->
+    <!-- TELA 1: ESCOLHA DA INTENÇÃO -->
     <template x-if="modo === 'seleção'">
       <div class="tavern-card rounded-3xl p-6 space-y-4">
-        <h2 class="text-sm font-bold text-amber-200 text-center font-cinzel tracking-wide">Qual missão a sua comitiva consegue cumprir hoje?</h2>
+        <h2 class="text-sm font-bold text-amber-200 text-center font-cinzel tracking-wide">Como podemos facilitar a vida da próxima Bárbara hoje?</h2>
         
         <div class="space-y-3">
-          <!-- Nível 1: Hobbit -->
+          <!-- Nível 1 -->
           <button @click="iniciarNivel('minimo')" class="w-full p-4 bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-700/60 rounded-2xl text-left transition flex items-center justify-between group">
             <div>
               <div class="font-bold text-emerald-300 text-sm flex items-center gap-2 font-cinzel">🕯️ Acender a Lareira <span class="text-[10px] bg-emerald-950 px-2 py-0.5 rounded-full text-emerald-300 border border-emerald-800">3-8 min</span></div>
-              <p class="text-xs text-stone-300 mt-1">Lixo fora, panela de molho, passagem liberada. Sem batalhar com louça se não der.</p>
+              <p class="text-xs text-stone-300 mt-1">Apenas retirar o lixo, panela de molho e abrir passagem na bancada.</p>
             </div>
-            <span class="text-xl group-hover:translate-x-1 transition">⚔️</span>
+            <span class="text-xl group-hover:translate-x-1 transition">✨</span>
           </button>
 
-          <!-- Nível 2: Guardião -->
+          <!-- Nível 2 -->
           <button @click="iniciarNivel('medio')" class="w-full p-4 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-700/60 rounded-2xl text-left transition flex items-center justify-between group">
             <div>
               <div class="font-bold text-amber-300 text-sm flex items-center gap-2 font-cinzel">🍞 Preparar a Mesa <span class="text-[10px] bg-amber-950 px-2 py-0.5 rounded-full text-amber-300 border border-amber-800">10-15 min</span></div>
-              <p class="text-xs text-stone-300 mt-1">Reduzir a fila da comitiva (copos e pratos) e restaurar o escorredor.</p>
+              <p class="text-xs text-stone-300 mt-1">Garantir utensílios básicos limpos (pratos/copos suficientes) e escorredor livre.</p>
             </div>
-            <span class="text-xl group-hover:translate-x-1 transition">⚔️</span>
+            <span class="text-xl group-hover:translate-x-1 transition">🌾</span>
           </button>
 
-          <!-- Nível 3: Rei -->
+          <!-- Nível 3 -->
           <button @click="iniciarNivel('completo')" class="w-full p-4 bg-yellow-950/40 hover:bg-yellow-900/60 border border-yellow-600/60 rounded-2xl text-left transition flex items-center justify-between group">
             <div>
               <div class="font-bold text-yellow-300 text-sm flex items-center gap-2 font-cinzel">👑 Restaurar o Salão <span class="text-[10px] bg-yellow-950 px-2 py-0.5 rounded-full text-yellow-300 border border-yellow-700">Completo</span></div>
-              <p class="text-xs text-stone-300 mt-1">Pia vazia, bancada limpa e a cozinha pronta para banquetes futuros.</p>
+              <p class="text-xs text-stone-300 mt-1">Cozinha totalmente em paz, bancada limpa e escorredor pronto.</p>
             </div>
             <span class="text-xl group-hover:translate-x-1 transition">👑</span>
           </button>
@@ -87,11 +86,11 @@
       </div>
     </template>
 
-    <!-- TELA 2: EXECUÇÃO DA MISSÃO -->
+    <!-- TELA 2: EXECUÇÃO ACOLHEDORA -->
     <template x-if="modo === 'execucao'">
       <div class="space-y-4">
         
-        <!-- BARRA DE JORNADA -->
+        <!-- BARRA DE CONTINUIDADE -->
         <div class="tavern-card rounded-2xl p-4">
           <div class="flex justify-between text-xs font-bold mb-1.5">
             <span class="text-amber-200 font-cinzel" x-text="nomeNivelAtual()"></span>
@@ -102,10 +101,10 @@
           </div>
         </div>
 
-        <!-- FOCO NA BATALHA ATUAL -->
+        <!-- PASSO ATUAL SEM LINGUAGEM DE BATALHA -->
         <div class="tavern-card rounded-3xl p-6 gold-border space-y-4">
           <div class="flex justify-between items-center text-xs font-bold text-amber-400 uppercase tracking-wider font-cinzel">
-            <span>🛡️ Batalha Atual</span>
+            <span>🌱 Cuidado do Momento</span>
             <span x-text="(currentStep + 1) + ' / ' + activeSteps.length"></span>
           </div>
 
@@ -119,38 +118,39 @@
             </div>
           </div>
 
-          <!-- BOTÃO PRINCIPAL DE AVANÇO -->
-          <button @click="completeCurrent()" class="w-full py-4 bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-stone-950 font-black text-base rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2 font-cinzel tracking-wider">
-            🗡️ DERROTAR ESTE OBSTÁCULO
+          <!-- BOTÃO REFORMULADO: FOCO NO CUIDADO -->
+          <button @click="completeCurrent()" class="w-full py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-500 text-stone-950 font-black text-base rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2 font-cinzel tracking-wider">
+            ✨ CUIDAR DESSA ETAPA
           </button>
 
-          <!-- SAÍDA DE HONRA (PRESERVAR RETOMADA) -->
-          <button @click="finalizarComVitoria()" class="w-full py-2.5 bg-stone-900 hover:bg-stone-800 text-amber-200/80 font-medium rounded-xl text-xs transition border border-stone-800 font-cinzel">
-            🌿 Pausa dos Hobbits: Preservar a jornada por hoje
+          <!-- PERMISSÃO DIGNIFICADA DE PAUSA -->
+          <button @click="finalizarComVitoria()" class="w-full py-3 bg-stone-900 hover:bg-stone-800 text-amber-200/90 font-medium rounded-xl text-xs transition border border-stone-800 font-cinzel flex flex-col items-center justify-center gap-0.5">
+            <span>🌿 Pausa dos Hobbits</span>
+            <span class="text-[10px] text-stone-400 font-sans font-normal">A próxima refeição já está protegida. Posso parar aqui.</span>
           </button>
         </div>
 
       </div>
     </template>
 
-    <!-- TELA 3: CELEBRAÇÃO NO SALÃO DA TAVERNA -->
+    <!-- TELA 3: TELA DE CONFIRMAÇÃO DE CONTINUIDADE (A PRÓXIMA BÁRBARA ESTÁ PROTEGIDA) -->
     <template x-if="modo === 'concluido'">
       <div class="tavern-card rounded-3xl p-6 text-center space-y-5 gold-border glow-gold">
-        <span class="text-5xl block animate-bounce">🍺</span>
+        <span class="text-5xl block animate-bounce">🏡</span>
         <div>
-          <h2 class="text-xl font-black text-amber-100 font-cinzel">O Salão está em Paz!</h2>
-          <p class="text-xs text-amber-300 font-medium mt-1">A próxima Bárbara encontrará uma estrada desobstruída.</p>
+          <h2 class="text-xl font-black text-amber-100 font-cinzel">A Próxima Refeição Está Protegida!</h2>
+          <p class="text-xs text-amber-300 font-medium mt-1">Sua casa cooperou com você hoje.</p>
         </div>
         
-        <div class="bg-stone-950/90 p-4 rounded-2xl text-left text-xs space-y-2 border border-amber-900/60">
-          <div class="font-bold text-amber-400 uppercase tracking-widest text-[10px] font-cinzel">Conquistas da Comitiva:</div>
-          <div class="text-stone-200 flex items-center gap-2">✨ Passagem segura até a próxima refeição</div>
-          <div class="text-stone-200 flex items-center gap-2">🛡️ O dragão da bagunça foi contido</div>
-          <div class="text-stone-200 flex items-center gap-2">🧠 Carga mental e RAM liberadas</div>
+        <div class="bg-stone-950/90 p-4 rounded-2xl text-left text-xs space-y-2.5 border border-amber-900/60">
+          <div class="font-bold text-amber-400 uppercase tracking-widest text-[10px] font-cinzel border-b border-amber-900/40 pb-1">Estado da Cozinha:</div>
+          <div class="text-stone-200 flex items-center gap-2">✅ Há utensílios prontos para a próxima refeição</div>
+          <div class="text-stone-200 flex items-center gap-2">✅ A bancada tem espaço operacional</div>
+          <div class="text-stone-200 flex items-center gap-2">✅ A Bárbara de daqui a pouco pode começar sem atrito</div>
         </div>
 
         <button @click="resetApp()" class="w-full py-3.5 bg-amber-950 hover:bg-amber-900 text-amber-200 font-bold rounded-xl text-xs transition border border-amber-700 font-cinzel tracking-wider">
-          📜 Voltar ao Quadro de Missões
+          📜 Encerrar e Retornar ao Início
         </button>
       </div>
     </template>
@@ -189,22 +189,22 @@
         nivelSelecionado: null,
         currentStep: 0,
         
-        // TAREFAS REFORMATADAS PARA O UNIVERSO DE TOLKIEN
+        // TAREFAS FOCADAS EM MÍNIMOS VIÁVEIS (RETIROU A IDEIA DE "ZERAR A PILHA INTEIRA")
         allSteps: [
           // Nível 1: Acender a Lareira
-          { id: 's1', nivel: 'minimo', title: 'Limpar Restos de Comida', icon: '🗑️', desc: 'Descartar restos no lixo antes de começar.', done: false },
-          { id: 's2', nivel: 'minimo', title: 'Panelas de Molho', icon: '🫖', desc: 'Colocar água nas panelas rebeldes (deixar a água trabalhar).', done: false },
-          { id: 's3', nivel: 'minimo', title: 'Desobstruir a Bancada', icon: '📦', desc: 'Liberar espaço vital para mover os braços com calma.', done: false },
+          { id: 's1', nivel: 'minimo', title: 'Limpar Restos do Caminho', icon: '🗑️', desc: 'Descartar restos no lixo. Apenas desobstruir.', done: false },
+          { id: 's2', nivel: 'minimo', title: 'Deixar Panelas de Molho', icon: '🫖', desc: 'Colocar água na panela difícil e deixar a química trabalhar.', done: false },
+          { id: 's3', nivel: 'minimo', title: 'Liberar um Canto da Bancada', icon: '📦', desc: 'Apenas criar um espaço livre para apoiar algo depois.', done: false },
           
-          // Nível 2: Preparar a Mesa
-          { id: 's4', nivel: 'medio', title: 'Liberar Escorredor', icon: '🧺', desc: 'Guardar louça seca para abrir espaço na estalagem.', done: false },
-          { id: 's5', nivel: 'medio', title: 'Copos e Cálices', icon: '🥛', desc: 'Lavar os copos rapidamente.', done: false },
-          { id: 's6', nivel: 'medio', title: 'Pratos e Talheres', icon: '🍽️', desc: 'Resgatar pratos e talheres para a próxima refeição.', done: false },
+          // Nível 2: Preparar a Mesa (Fracionado!)
+          { id: 's4', nivel: 'medio', title: 'Liberar Espaço no Escorredor', icon: '🧺', desc: 'Guardar apenas o suficiente para o escorredor respirar.', done: false },
+          { id: 's5', nivel: 'medio', title: 'Garantir 2 Copos Limpos', icon: '🥛', desc: 'Lavar os copos necessários para o próximo momento.', done: false },
+          { id: 's6', nivel: 'medio', title: 'Garantir Pratos e Talheres do Par', icon: '🍽️', desc: 'Lavar 2 pratos e talheres. Não precisa zerar a pilha toda.', done: false },
 
           // Nível 3: Restaurar o Salão
-          { id: 's7', nivel: 'completo', title: 'Derrotar as Panelas', icon: '🍳', desc: 'Enfrentar e lavar os recipientes maiores.', done: false },
-          { id: 's8', nivel: 'completo', title: 'Purificar a Cuba', icon: '🧽', desc: 'Ensaboar e enxaguar a pia inteira.', done: false },
-          { id: 's9', nivel: 'completo', title: 'Passar Pano Seco', icon: '✨', desc: 'Secar a bancada e celebrar a restauração do salão.', done: false }
+          { id: 's7', nivel: 'completo', title: 'Acolher as Panelas', icon: '🍳', desc: 'Lavar os recipientes que ficaram de molho.', done: false },
+          { id: 's8', nivel: 'completo', title: 'Purificar a Cuba', icon: '🧽', desc: 'Passar a bucha na pia e enxaguar.', done: false },
+          { id: 's9', nivel: 'completo', title: 'Passar Pano Seco', icon: '✨', desc: 'Secar a bancada para fechar com conforto visual.', done: false }
         ],
 
         activeSteps: [],
