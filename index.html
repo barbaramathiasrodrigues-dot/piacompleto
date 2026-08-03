@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>⚡ Pia OS — Ciclo Completo de Infraestrutura</title>
+  <title>🍺 Estalagem da Pia — Casa Reguladora</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
@@ -13,7 +13,7 @@
       min-height: 100vh;
     }
     .glass-card {
-      background: rgba(30, 41, 59, 0.75);
+      background: rgba(30, 41, 59, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -24,90 +24,125 @@
 
   <div x-data="cicloPiaApp()" x-init="initFirebase()" class="max-w-md mx-auto space-y-6">
 
-    <!-- HEADER DE INFRAESTRUTURA DA CASA REGULADORA -->
-    <header class="glass-card rounded-3xl p-6 shadow-xl border border-slate-700/50 text-center">
+    <!-- HEADER DE INFRAESTRUTURA -->
+    <header class="glass-card rounded-3xl p-6 shadow-xl text-center relative overflow-hidden">
       <div class="flex justify-between items-center mb-2">
         <span class="text-xs font-bold uppercase tracking-widest text-teal-400">Casa Reguladora</span>
         <span x-show="loading" class="text-xs text-amber-400 bg-amber-950/60 px-2.5 py-1 rounded-full animate-pulse border border-amber-800">Sync...</span>
       </div>
-      <h1 class="text-2xl font-black text-white">🍽️ Pia OS: Ciclo Completo</h1>
-      
-      <!-- BARRA DE CAPACIDADE DA INFRAESTRUTURA -->
-      <div class="mt-4 bg-slate-900/80 p-3.5 rounded-2xl border border-slate-700/60">
-        <div class="flex justify-between text-xs font-bold mb-1.5">
-          <span class="text-slate-400">Recuperação de Infraestrutura</span>
-          <span class="text-teal-400 font-extrabold" x-text="percent + '%'"></span>
-        </div>
-        <div class="w-full bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5">
-          <div class="bg-gradient-to-r from-teal-500 via-emerald-400 to-green-300 h-full rounded-full transition-all duration-500 shadow-sm" :style="'width: ' + percent + '%'"></div>
-        </div>
-      </div>
+      <h1 class="text-2xl font-black text-white flex items-center justify-center gap-2">
+        🍺 Estalagem da Pia
+      </h1>
+      <p class="text-xs text-slate-300 mt-1">A próxima refeição precisa ser acolhedora.</p>
     </header>
 
-    <!-- RODA DO CICLO: GRADE INTERATIVA QUE VAI SENDO PINTADA -->
-    <div class="glass-card rounded-3xl p-5 shadow-xl space-y-3">
-      <div class="flex justify-between items-center">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Mapa do Ciclo de Tarefas</h2>
-        <span class="text-[10px] text-slate-500">Toque em qualquer card para focar</span>
-      </div>
-      
-      <div class="grid grid-cols-3 gap-2 text-xs">
-        <template x-for="(step, index) in steps" :key="index">
-          <div 
-            @click="setStep(index)"
-            :class="[
-              step.done ? 'bg-emerald-500/25 border-emerald-500/60 text-emerald-300 shadow-sm' : 'bg-slate-800/60 border-slate-700/50 text-slate-400',
-              currentStep === index && percent < 100 ? 'ring-2 ring-teal-400 font-bold scale-105' : ''
-            ]"
-            class="p-2.5 rounded-2xl border transition-all cursor-pointer flex flex-col items-center justify-center gap-1 min-h-[68px] text-center">
-            <span class="text-lg" x-text="step.done ? '✅' : step.icon"></span>
-            <span class="text-[10px] leading-tight font-medium" x-text="step.title"></span>
-          </div>
-        </template>
-      </div>
-    </div>
-
-    <!-- MODO GPS: FOCO TOTAL NA TAREFA DO MOMENTO -->
-    <template x-if="percent < 100">
-      <div class="glass-card rounded-3xl p-6 shadow-xl border border-teal-500/40 space-y-4">
-        <div class="flex justify-between items-center text-xs font-bold text-teal-400 uppercase tracking-wider">
-          <span>🎯 Próximo Gargalo Operacional</span>
-          <span x-text="(currentStep + 1) + ' / ' + steps.length"></span>
-        </div>
-
-        <div class="space-y-2 bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
-          <div class="flex items-center gap-3">
-            <span class="text-3xl" x-text="steps[currentStep].icon"></span>
+    <!-- TELA 1: ESCOLHA DA INTENÇÃO / NÍVEL DE ENERGIA -->
+    <template x-if="modo === 'seleção'">
+      <div class="glass-card rounded-3xl p-6 shadow-xl space-y-4">
+        <h2 class="text-sm font-bold text-slate-200 text-center">Como a cozinha pode cuidar de você hoje?</h2>
+        
+        <div class="space-y-3">
+          <!-- Nível 1 -->
+          <button @click="iniciarNivel('minimo')" class="w-full p-4 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/40 rounded-2xl text-left transition flex items-center justify-between group">
             <div>
-              <h3 class="text-base font-bold text-white" x-text="steps[currentStep].title"></h3>
-              <p class="text-xs text-slate-400 mt-0.5" x-text="steps[currentStep].desc"></p>
+              <div class="font-bold text-emerald-300 text-sm flex items-center gap-2">🌱 Um pouco melhor <span class="text-[10px] bg-emerald-900/80 px-2 py-0.5 rounded-full text-emerald-200">3-8 min</span></div>
+              <p class="text-xs text-slate-400 mt-1">Lixo fora, panela de molho, bancada respirando. Sem lavar nada se não der.</p>
             </div>
-          </div>
-        </div>
+            <span class="text-xl group-hover:translate-x-1 transition">➡️</span>
+          </button>
 
-        <!-- BOTÃO GIGANTE DE AVANÇO -->
-        <button @click="completeCurrent()" class="w-full py-5 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-slate-950 font-black text-lg rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
-          ✔ CONCLUIR E PINTAR ESTADO
-        </button>
+          <!-- Nível 2 -->
+          <button @click="iniciarNivel('medio')" class="w-full p-4 bg-amber-950/40 hover:bg-amber-900/50 border border-amber-500/40 rounded-2xl text-left transition flex items-center justify-between group">
+            <div>
+              <div class="font-bold text-amber-300 text-sm flex items-center gap-2">🌼 Mais leve <span class="text-[10px] bg-amber-900/80 px-2 py-0.5 rounded-full text-amber-200">10-15 min</span></div>
+              <p class="text-xs text-slate-400 mt-1">Reduzir a fila (copos + pratos) e liberar o escorredor.</p>
+            </div>
+            <span class="text-xl group-hover:translate-x-1 transition">➡️</span>
+          </button>
+
+          <!-- Nível 3 -->
+          <button @click="iniciarNivel('completo')" class="w-full p-4 bg-teal-950/40 hover:bg-teal-900/50 border border-teal-500/40 rounded-2xl text-left transition flex items-center justify-between group">
+            <div>
+              <div class="font-bold text-teal-300 text-sm flex items-center gap-2">✨ Gostosinha e pronta <span class="text-[10px] bg-teal-900/80 px-2 py-0.5 rounded-full text-teal-200">Completo</span></div>
+              <p class="text-xs text-slate-400 mt-1">Pia limpa, pano passado e ambiente zerado para comemorar.</p>
+            </div>
+            <span class="text-xl group-hover:translate-x-1 transition">➡️</span>
+          </button>
+        </div>
       </div>
     </template>
 
-    <!-- ESTADO 100%: INFRAESTRUTURA LIBERADA -->
-    <template x-if="percent === 100">
-      <div class="glass-card rounded-3xl p-6 shadow-xl border border-emerald-500/50 text-center space-y-4 bg-emerald-950/20">
-        <span class="text-5xl block">✨</span>
-        <h2 class="text-xl font-black text-white">Infraestrutura 100% Operacional!</h2>
-        <p class="text-xs text-slate-300">A pia foi completamente recuperada e o ciclo foi concluído sem esforço residual.</p>
+    <!-- TELA 2: EXECUÇÃO DO PASSO A PASSO -->
+    <template x-if="modo === 'execucao'">
+      <div class="space-y-4">
         
-        <button @click="resetCiclo()" class="w-full py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition border border-slate-700">
-          🔄 Reiniciar Ciclo para Nova Utilização
+        <!-- BARRA DE PROGRESSO DO NÍVEL ATUAL -->
+        <div class="glass-card rounded-2xl p-4 shadow-xl">
+          <div class="flex justify-between text-xs font-bold mb-1.5">
+            <span class="text-slate-300" x-text="nomeNivelAtual()"></span>
+            <span class="text-teal-400" x-text="percent + '%'"></span>
+          </div>
+          <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden">
+            <div class="bg-gradient-to-r from-teal-500 to-emerald-400 h-full transition-all duration-300" :style="'width: ' + percent + '%'"></div>
+          </div>
+        </div>
+
+        <!-- FOCU NO PASSO ATUAL -->
+        <div class="glass-card rounded-3xl p-6 shadow-xl border border-teal-500/40 space-y-4">
+          <div class="flex justify-between items-center text-xs font-bold text-teal-400 uppercase tracking-wider">
+            <span>🎯 Ação Atual</span>
+            <span x-text="(currentStep + 1) + ' / ' + activeSteps.length"></span>
+          </div>
+
+          <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 space-y-2">
+            <div class="flex items-center gap-3">
+              <span class="text-4xl" x-text="activeSteps[currentStep].icon"></span>
+              <div>
+                <h3 class="text-lg font-bold text-white" x-text="activeSteps[currentStep].title"></h3>
+                <p class="text-xs text-slate-300 mt-1 leading-relaxed" x-text="activeSteps[currentStep].desc"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOTÃO PRINCIPAL -->
+          <button @click="completeCurrent()" class="w-full py-4 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-slate-950 font-black text-base rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+            ✨ CONCLUIR ESTA ETAPA
+          </button>
+
+          <!-- OPÇÃO DE ENCERRAMENTO COM VITÓRIA -->
+          <button @click="finalizarComVitoria()" class="w-full py-2.5 bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-medium rounded-xl text-xs transition border border-slate-700">
+            🌿 Parar por aqui e preservar a próxima refeição
+          </button>
+        </div>
+
+      </div>
+    </template>
+
+    <!-- TELA 3: RITUAL DOS CRÉDITOS / SUCESSO -->
+    <template x-if="modo === 'concluido'">
+      <div class="glass-card rounded-3xl p-6 shadow-xl border border-emerald-500/50 text-center space-y-5 bg-emerald-950/20">
+        <span class="text-5xl block animate-bounce">🏆</span>
+        <div>
+          <h2 class="text-xl font-black text-white">Missão Cumprida!</h2>
+          <p class="text-xs text-emerald-300 font-medium mt-1">A próxima Bárbara agradece pelo cuidado de hoje.</p>
+        </div>
+        
+        <div class="bg-slate-900/70 p-4 rounded-2xl text-left text-xs space-y-2 border border-slate-800">
+          <div class="font-bold text-slate-400 uppercase tracking-widest text-[10px]">O que você conquistou:</div>
+          <div class="text-slate-200 flex items-center gap-2">✅ Espaço recuperado na bancada</div>
+          <div class="text-slate-200 flex items-center gap-2">✅ Menos atrito para a próxima refeição</div>
+          <div class="text-slate-200 flex items-center gap-2">✅ Carga mental e RAM liberadas</div>
+        </div>
+
+        <button @click="resetApp()" class="w-full py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl text-xs transition border border-slate-700">
+          🔄 Voltar para o Início
         </button>
       </div>
     </template>
 
   </div>
 
-  <!-- FIREBASE INTERFACE MODULE (PROJETO PIA-COMPLETA) -->
+  <!-- FIREBASE INTERFACE MODULE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -135,25 +170,77 @@
     function cicloPiaApp() {
       return {
         loading: true,
+        modo: 'seleção', // 'seleção', 'execucao', 'concluido'
+        nivelSelecionado: null,
         currentStep: 0,
-        steps: [
-          { id: 's1', title: 'Pegar Louça Quarto/Sala', icon: '☕', desc: 'Resgatar copos e pratos perdidos pela casa.', done: false },
-          { id: 's2', title: 'Ferver Água', icon: '🫖', desc: 'Ferver água se precisar desengordurar.', done: false },
-          { id: 's3', title: 'Tirar Lixos da Pia', icon: '🗑️', desc: 'Descartar restos e embalagens vazias.', done: false },
-          { id: 's4', title: 'Tirar Garrafas Vazias', icon: '🍾', desc: 'Retirar garrafas da área de trabalho.', done: false },
-          { id: 's5', title: 'Guardar Coisas de Fora', icon: '📦', desc: 'Devolver objetos que não são da pia.', done: false },
-          { id: 's6', title: 'Empilhar Semelhantes', icon: '🍽️', desc: 'Agrupar pratos com pratos e copos com copos.', done: false },
-          { id: 's7', title: 'Limpar a Pia', icon: '🧽', desc: 'Liberar a cuba para a água fluir.', done: false },
-          { id: 's8', title: 'Pratos', icon: '🍽️', desc: 'Lavar o lote de pratos.', done: false },
-          { id: 's9', title: 'Copos', icon: '🥛', desc: 'Lavar copos e xícaras.', done: false },
-          { id: 's10', title: 'Talheres', icon: '🍴', desc: 'Lavar os talheres.', done: false },
-          { id: 's11', title: 'Outras Louças', icon: '🥣', desc: 'Lavar potes e recipientes.', done: false },
-          { id: 's12', title: 'Panelas', icon: '🍳', desc: 'Lavar as panelas e finalizar.', done: false }
+        
+        // BANCO DE TAREFAS CATEGORIZADAS POR NÍVEL
+        allSteps: [
+          // Nível 1: Mínimo / Manter Funcional
+          { id: 's1', nivel: 'minimo', title: 'Tirar Lixos e Restos', icon: '🗑️', desc: 'Descartar restos de comida no lixo orgânico.', done: false },
+          { id: 's2', nivel: 'minimo', title: 'Panelas de Molho', icon: '🫖', desc: 'Colocar água/detergente nas panelas difíceis.', done: false },
+          { id: 's3', nivel: 'minimo', title: 'Liberar a Bancada', icon: '📦', desc: 'Empilhar ou afastar objetos fora da área de trabalho.', done: false },
+          
+          // Nível 2: Reduzir Acúmulo
+          { id: 's4', nivel: 'medio', title: 'Guardar Louça Seca', icon: '🧺', desc: 'Esvaziar o escorredor para receber louça nova.', done: false },
+          { id: 's5', nivel: 'medio', title: 'Copos e Xícaras', icon: '🥛', desc: 'Lavar o lote rápido de copos e xícaras.', done: false },
+          { id: 's6', nivel: 'medio', title: 'Pratos e Talheres', icon: '🍽️', desc: 'Lavar os utensílios da última refeição.', done: false },
+
+          // Nível 3: Fechamento Completo
+          { id: 's7', nivel: 'completo', title: 'Panelas e Potes', icon: '🍳', desc: 'Lavar as panelas pesadas e recipientes.', done: false },
+          { id: 's8', nivel: 'completo', title: 'Limpar a Cuba da Pia', icon: '🧽', desc: 'Passar a bucha na pia e enxaguar a cuba.', done: false },
+          { id: 's9', nivel: 'completo', title: 'Pano na Bancada', icon: '✨', desc: 'Finalizar passando pano seco na bancada.', done: false }
         ],
 
+        activeSteps: [],
+
         get percent() {
-          let doneCount = this.steps.filter(s => s.done).length;
-          return Math.round((doneCount / this.steps.length) * 100);
+          if (!this.activeSteps.length) return 0;
+          let doneCount = this.activeSteps.filter(s => s.done).length;
+          return Math.round((doneCount / this.activeSteps.length) * 100);
+        },
+
+        iniciarNivel(nivel) {
+          this.nivelSelecionado = nivel;
+          if (nivel === 'minimo') {
+            this.activeSteps = this.allSteps.filter(s => s.nivel === 'minimo');
+          } else if (nivel === 'medio') {
+            this.activeSteps = this.allSteps.filter(s => s.nivel === 'minimo' || s.nivel === 'medio');
+          } else {
+            this.activeSteps = [...this.allSteps];
+          }
+          this.currentStep = 0;
+          this.modo = 'execucao';
+          this.saveState();
+        },
+
+        nomeNivelAtual() {
+          if (this.nivelSelecionado === 'minimo') return '🌱 Um pouco melhor';
+          if (this.nivelSelecionado === 'medio') return '🌼 Mais leve';
+          return '✨ Gostosinha e pronta';
+        },
+
+        completeCurrent() {
+          this.activeSteps[this.currentStep].done = true;
+          if (this.currentStep < this.activeSteps.length - 1) {
+            this.currentStep++;
+          } else {
+            this.modo = 'concluido';
+          }
+          this.saveState();
+        },
+
+        finalizarComVitoria() {
+          this.modo = 'concluido';
+          this.saveState();
+        },
+
+        resetApp() {
+          this.allSteps.forEach(s => s.done = false);
+          this.activeSteps = [];
+          this.currentStep = 0;
+          this.modo = 'seleção';
+          this.saveState();
         },
 
         async initFirebase() {
@@ -164,14 +251,8 @@
               window.onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
                   const data = docSnap.data();
-                  this.steps.forEach(s => {
-                    if (data[s.id] !== undefined) {
-                      s.done = data[s.id];
-                    }
-                  });
-                  if (data.currentStep !== undefined) {
-                    this.currentStep = data.currentStep;
-                  }
+                  if (data.modo) this.modo = data.modo;
+                  if (data.nivelSelecionado) this.nivelSelecionado = data.nivelSelecionado;
                 }
                 this.loading = false;
               });
@@ -181,34 +262,13 @@
 
         async saveState() {
           if (!window.db) return;
-          const payload = { currentStep: this.currentStep };
-          this.steps.forEach(s => { payload[s.id] = s.done; });
+          const payload = { 
+            modo: this.modo, 
+            nivelSelecionado: this.nivelSelecionado,
+            currentStep: this.currentStep 
+          };
           const docRef = window.doc(window.db, "modo_casa", "ciclo_pia");
           await window.setDoc(docRef, payload, { merge: true });
-        },
-
-        completeCurrent() {
-          this.steps[this.currentStep].done = true;
-          // Procura o próximo passo não concluído
-          let next = this.steps.findIndex((s, idx) => idx > this.currentStep && !s.done);
-          if (next !== -1) {
-            this.currentStep = next;
-          } else {
-            let firstUndone = this.steps.findIndex(s => !s.done);
-            if (firstUndone !== -1) this.currentStep = firstUndone;
-          }
-          this.saveState();
-        },
-
-        setStep(index) {
-          this.currentStep = index;
-          this.saveState();
-        },
-
-        resetCiclo() {
-          this.steps.forEach(s => s.done = false);
-          this.currentStep = 0;
-          this.saveState();
         }
       }
     }
