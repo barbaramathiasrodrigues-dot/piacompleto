@@ -38,7 +38,7 @@
 
   <div x-data="cicloPiaApp()" x-init="initFirebase()" class="max-w-md mx-auto space-y-6">
 
-    <!-- HEADER DA ESTALAGEM DO DRAGÃO VERDE -->
+    <!-- HEADER DA ESTALAGEM -->
     <header class="tavern-card rounded-3xl p-6 text-center relative overflow-hidden gold-border glow-gold">
       <div class="flex justify-between items-center mb-2">
         <span class="text-[10px] font-cinzel font-bold uppercase tracking-widest text-amber-500">Casa Reguladora</span>
@@ -47,7 +47,7 @@
       <h1 class="text-2xl font-black text-amber-100 flex items-center justify-center gap-2">
         🍺 Estalagem da Pia
       </h1>
-      <p class="text-xs text-amber-200/70 mt-1 italic">"Não é sobre zerar a pia. É sobre acolher a próxima refeição."</p>
+      <p class="text-xs text-amber-200/70 mt-1 italic">"Passo a passo, de dois em dois itens."</p>
     </header>
 
     <!-- TELA 1: ESCOLHA DA INTENÇÃO -->
@@ -60,7 +60,7 @@
           <button @click="iniciarNivel('minimo')" class="w-full p-4 bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-700/60 rounded-2xl text-left transition flex items-center justify-between group">
             <div>
               <div class="font-bold text-emerald-300 text-sm flex items-center gap-2 font-cinzel">🕯️ Acender a Lareira <span class="text-[10px] bg-emerald-950 px-2 py-0.5 rounded-full text-emerald-300 border border-emerald-800">3-8 min</span></div>
-              <p class="text-xs text-stone-300 mt-1">Apenas retirar o lixo, panela de molho e abrir passagem na bancada.</p>
+              <p class="text-xs text-stone-300 mt-1">Lixo fora, panela de molho e liberar a bancada. Sem lavar louça.</p>
             </div>
             <span class="text-xl group-hover:translate-x-1 transition">✨</span>
           </button>
@@ -68,8 +68,8 @@
           <!-- Nível 2 -->
           <button @click="iniciarNivel('medio')" class="w-full p-4 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-700/60 rounded-2xl text-left transition flex items-center justify-between group">
             <div>
-              <div class="font-bold text-amber-300 text-sm flex items-center gap-2 font-cinzel">🍞 Preparar a Mesa <span class="text-[10px] bg-amber-950 px-2 py-0.5 rounded-full text-amber-300 border border-amber-800">10-15 min</span></div>
-              <p class="text-xs text-stone-300 mt-1">Garantir utensílios básicos limpos (pratos/copos suficientes) e escorredor livre.</p>
+              <div class="font-bold text-amber-300 text-sm flex items-center gap-2 font-cinzel">🍞 Preparar a Mesa <span class="text-[10px] bg-amber-950 px-2 py-0.5 rounded-full text-amber-300 border border-amber-800">Micro-etapas</span></div>
+              <p class="text-xs text-stone-300 mt-1">Garantir talheres e pratos em pequenos lotes de 2 itens por vez.</p>
             </div>
             <span class="text-xl group-hover:translate-x-1 transition">🌾</span>
           </button>
@@ -78,7 +78,7 @@
           <button @click="iniciarNivel('completo')" class="w-full p-4 bg-yellow-950/40 hover:bg-yellow-900/60 border border-yellow-600/60 rounded-2xl text-left transition flex items-center justify-between group">
             <div>
               <div class="font-bold text-yellow-300 text-sm flex items-center gap-2 font-cinzel">👑 Restaurar o Salão <span class="text-[10px] bg-yellow-950 px-2 py-0.5 rounded-full text-yellow-300 border border-yellow-700">Completo</span></div>
-              <p class="text-xs text-stone-300 mt-1">Cozinha totalmente em paz, bancada limpa e escorredor pronto.</p>
+              <p class="text-xs text-stone-300 mt-1">Micro-etapas + panelas + passar pano para deixar o salão zerado.</p>
             </div>
             <span class="text-xl group-hover:translate-x-1 transition">👑</span>
           </button>
@@ -86,7 +86,7 @@
       </div>
     </template>
 
-    <!-- TELA 2: EXECUÇÃO ACOLHEDORA -->
+    <!-- TELA 2: EXECUÇÃO DAS MICRO-ETAPAS -->
     <template x-if="modo === 'execucao'">
       <div class="space-y-4">
         
@@ -101,52 +101,48 @@
           </div>
         </div>
 
-        <!-- PASSO ATUAL SEM LINGUAGEM DE BATALHA -->
+        <!-- PASSO ATUAL HIPERESPECÍFICO -->
         <div class="tavern-card rounded-3xl p-6 gold-border space-y-4">
           <div class="flex justify-between items-center text-xs font-bold text-amber-400 uppercase tracking-wider font-cinzel">
-            <span>🌱 Cuidado do Momento</span>
+            <span>🌱 Micro-Ação</span>
             <span x-text="(currentStep + 1) + ' / ' + activeSteps.length"></span>
           </div>
 
-          <div class="bg-stone-950/80 p-5 rounded-2xl border border-stone-800 space-y-2">
-            <div class="flex items-center gap-3">
-              <span class="text-4xl" x-text="activeSteps[currentStep].icon"></span>
-              <div>
-                <h3 class="text-lg font-bold text-amber-100 font-cinzel" x-text="activeSteps[currentStep].title"></h3>
-                <p class="text-xs text-stone-300 mt-1 leading-relaxed" x-text="activeSteps[currentStep].desc"></p>
-              </div>
-            </div>
+          <div class="bg-stone-950/80 p-5 rounded-2xl border border-stone-800 space-y-2 text-center">
+            <span class="text-5xl block my-2" x-text="activeSteps[currentStep].icon"></span>
+            <h3 class="text-xl font-black text-amber-100 font-cinzel" x-text="activeSteps[currentStep].title"></h3>
+            <p class="text-xs text-stone-300 mt-1 leading-relaxed" x-text="activeSteps[currentStep].desc"></p>
           </div>
 
-          <!-- BOTÃO REFORMULADO: FOCO NO CUIDADO -->
+          <!-- BOTÃO DE CONCLUSÃO RÁPIDA -->
           <button @click="completeCurrent()" class="w-full py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-500 text-stone-950 font-black text-base rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2 font-cinzel tracking-wider">
-            ✨ CUIDAR DESSA ETAPA
+            ✨ CONCLUÍ ESSES 2! PROXIMO ➡️
           </button>
 
-          <!-- PERMISSÃO DIGNIFICADA DE PAUSA -->
+          <!-- PERMISSÃO DE PAUSA -->
           <button @click="finalizarComVitoria()" class="w-full py-3 bg-stone-900 hover:bg-stone-800 text-amber-200/90 font-medium rounded-xl text-xs transition border border-stone-800 font-cinzel flex flex-col items-center justify-center gap-0.5">
             <span>🌿 Pausa dos Hobbits</span>
-            <span class="text-[10px] text-stone-400 font-sans font-normal">A próxima refeição já está protegida. Posso parar aqui.</span>
+            <span class="text-[10px] text-stone-400 font-sans font-normal">A próxima refeição já ganhou utensílios. Posso parar agora.</span>
           </button>
         </div>
 
       </div>
     </template>
 
-    <!-- TELA 3: TELA DE CONFIRMAÇÃO DE CONTINUIDADE (A PRÓXIMA BÁRBARA ESTÁ PROTEGIDA) -->
+    <!-- TELA 3: CELEBRAÇÃO DA CONTINUIDADE -->
     <template x-if="modo === 'concluido'">
       <div class="tavern-card rounded-3xl p-6 text-center space-y-5 gold-border glow-gold">
         <span class="text-5xl block animate-bounce">🏡</span>
         <div>
           <h2 class="text-xl font-black text-amber-100 font-cinzel">A Próxima Refeição Está Protegida!</h2>
-          <p class="text-xs text-amber-300 font-medium mt-1">Sua casa cooperou com você hoje.</p>
+          <p class="text-xs text-amber-300 font-medium mt-1">Você concluiu os pequenos ciclos que importam.</p>
         </div>
         
         <div class="bg-stone-950/90 p-4 rounded-2xl text-left text-xs space-y-2.5 border border-amber-900/60">
-          <div class="font-bold text-amber-400 uppercase tracking-widest text-[10px] font-cinzel border-b border-amber-900/40 pb-1">Estado da Cozinha:</div>
-          <div class="text-stone-200 flex items-center gap-2">✅ Há utensílios prontos para a próxima refeição</div>
-          <div class="text-stone-200 flex items-center gap-2">✅ A bancada tem espaço operacional</div>
-          <div class="text-stone-200 flex items-center gap-2">✅ A Bárbara de daqui a pouco pode começar sem atrito</div>
+          <div class="font-bold text-amber-400 uppercase tracking-widest text-[10px] font-cinzel border-b border-amber-900/40 pb-1">Conquistas dos Micro-Passos:</div>
+          <div class="text-stone-200 flex items-center gap-2">🍴 Garfos, facas e colheres limpos em pares</div>
+          <div class="text-stone-200 flex items-center gap-2">🍽️ Pratos prontos para uso sem estresse</div>
+          <div class="text-stone-200 flex items-center gap-2">🧠 Zero atrito e zero sobrecarga cognitiva</div>
         </div>
 
         <button @click="resetApp()" class="w-full py-3.5 bg-amber-950 hover:bg-amber-900 text-amber-200 font-bold rounded-xl text-xs transition border border-amber-700 font-cinzel tracking-wider">
@@ -189,22 +185,26 @@
         nivelSelecionado: null,
         currentStep: 0,
         
-        // TAREFAS FOCADAS EM MÍNIMOS VIÁVEIS (RETIROU A IDEIA DE "ZERAR A PILHA INTEIRA")
+        // LISTA COM AS MICRO-ETAPAS SEPARADAS E INDIVIDUAIS
         allSteps: [
-          // Nível 1: Acender a Lareira
-          { id: 's1', nivel: 'minimo', title: 'Limpar Restos do Caminho', icon: '🗑️', desc: 'Descartar restos no lixo. Apenas desobstruir.', done: false },
-          { id: 's2', nivel: 'minimo', title: 'Deixar Panelas de Molho', icon: '🫖', desc: 'Colocar água na panela difícil e deixar a química trabalhar.', done: false },
-          { id: 's3', nivel: 'minimo', title: 'Liberar um Canto da Bancada', icon: '📦', desc: 'Apenas criar um espaço livre para apoiar algo depois.', done: false },
+          // Nível 1: Acender a Lareira (Preparação da Cozinha)
+          { id: 's1', nivel: 'minimo', title: 'Tirar Restos no Lixo', icon: '🗑️', desc: 'Apenas empurrar os restos de comida para o lixo.', done: false },
+          { id: 's2', nivel: 'minimo', title: 'Panelas de Molho', icon: '🫖', desc: 'Colocar água com detergente na panela mais difícil.', done: false },
+          { id: 's3', nivel: 'minimo', title: 'Liberar a Bancada', icon: '📦', desc: 'Abrir um espaço livre na bancada para trabalhar.', done: false },
           
-          // Nível 2: Preparar a Mesa (Fracionado!)
-          { id: 's4', nivel: 'medio', title: 'Liberar Espaço no Escorredor', icon: '🧺', desc: 'Guardar apenas o suficiente para o escorredor respirar.', done: false },
-          { id: 's5', nivel: 'medio', title: 'Garantir 2 Copos Limpos', icon: '🥛', desc: 'Lavar os copos necessários para o próximo momento.', done: false },
-          { id: 's6', nivel: 'medio', title: 'Garantir Pratos e Talheres do Par', icon: '🍽️', desc: 'Lavar 2 pratos e talheres. Não precisa zerar a pilha toda.', done: false },
+          // Nível 2: Preparar a Mesa (Desmembrado de 2 em 2!)
+          { id: 's4', nivel: 'medio', title: 'Liberar o Escorredor', icon: '🧺', desc: 'Guardar louça seca só até o escorredor ter espaço.', done: false },
+          { id: 's5', nivel: 'medio', title: 'Lavar 2 Copos', icon: '🥛', desc: 'Apenas 2 copos. Molhou, ensabocou, enxaguou.', done: false },
+          { id: 's6', nivel: 'medio', title: 'Lavar 2 Garfos', icon: '🍴', desc: 'Pegar e lavar apenas 2 garfos.', done: false },
+          { id: 's7', nivel: 'medio', title: 'Lavar 2 Facas', icon: '🔪', desc: 'Pegar e lavar apenas 2 facas com cuidado.', done: false },
+          { id: 's8', nivel: 'medio', title: 'Lavar 2 Colheres', icon: '🥄', desc: 'Pegar e lavar apenas 2 colheres.', done: false },
+          { id: 's9', nivel: 'medio', title: 'Lavar 2 Pegadores / Utensílios', icon: '🥢', desc: 'Lavar 2 pegadores, conchas ou colheres de pau.', done: false },
+          { id: 's10', nivel: 'medio', title: 'Lavar 2 Pratos', icon: '🍽️', desc: 'Finalizar lavando apenas 2 pratos.', done: false },
 
-          // Nível 3: Restaurar o Salão
-          { id: 's7', nivel: 'completo', title: 'Acolher as Panelas', icon: '🍳', desc: 'Lavar os recipientes que ficaram de molho.', done: false },
-          { id: 's8', nivel: 'completo', title: 'Purificar a Cuba', icon: '🧽', desc: 'Passar a bucha na pia e enxaguar.', done: false },
-          { id: 's9', nivel: 'completo', title: 'Passar Pano Seco', icon: '✨', desc: 'Secar a bancada para fechar com conforto visual.', done: false }
+          // Nível 3: Restaurar o Salão (Finalização)
+          { id: 's11', nivel: 'completo', title: 'Acolher as Panelas', icon: '🍳', desc: 'Lavar a panela que ficou de molho.', done: false },
+          { id: 's12', nivel: 'completo', title: 'Enxaguar a Pia', icon: '🧽', desc: 'Passar a bucha rápida na cuba da pia.', done: false },
+          { id: 's13', nivel: 'completo', title: 'Passar Pano na Bancada', icon: '✨', desc: 'Secar a bancada e fechar o ciclo com paz.', done: false }
         ],
 
         activeSteps: [],
